@@ -371,6 +371,25 @@ describe GenericAsset, :resque => true do
           generic_asset.od_content << asset_4
           expect(generic_asset.od_content.to_a.map(&:references)).to eq [[asset_2], [asset_3], [asset_4]]
         end
+
+        context "and then od_content is cleared" do
+          let(:after_clear_appended_asset) {FactoryGirl.create(:generic_asset)}
+
+          before(:each) do
+            generic_asset.od_content.clear
+          end
+
+          it "should allow appending more objects" do
+            generic_asset.od_content << after_clear_appended_asset
+            expect(generic_asset.od_content.length).to eql(1)
+          end
+
+          it "should have no objects after saving and reloading" do
+            generic_asset.save
+            asset = GenericAsset.find(generic_asset.pid)
+            expect(asset.od_content.length).to eql(0)
+          end
+        end
       end
     end
   end
