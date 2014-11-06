@@ -376,7 +376,7 @@ describe GenericAsset, :resque => true do
           let(:after_clear_appended_asset) {FactoryGirl.create(:generic_asset)}
 
           before(:each) do
-            generic_asset.od_content.clear
+            generic_asset.clear_od_content
           end
 
           it "should allow appending more objects" do
